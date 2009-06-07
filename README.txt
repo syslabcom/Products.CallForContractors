@@ -2,16 +2,12 @@
 
 .. Note!
    -----
-   Update the following URLs to point to your:
 
    - code repository
    - bug tracker
    - questions/comments feedback mail
-   (do not set a real mail, to avoid spams)
 
-   Or remove it if not used.
-
-- Code repository: http://svn.somewhere.com/...
-- Questions and comments to somemailing_list
-- Report bugs at http://bug.somewhere.com/..
+- Code repository: https://svn.syslab.com/svn/OSHA/Products.CallForContractors/trunk/
+- Questions and comments to mailto:info (at) syslab (dot) com
+- Report bugs at http://products.syslab.com/products
 

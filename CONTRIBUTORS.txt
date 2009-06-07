@@ -1,2 +1,3 @@
-Syslab.com GmbH, Author
+- Wolfgang Thomas, Syslab.com 
+- Alexander Pilz, Syslab.com
 
