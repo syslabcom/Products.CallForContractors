@@ -1,0 +1,50 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:five="http://namespaces.zope.org/five">
+  
+  <include file="profiles.zcml" />
+  
+  <include package=".browser" />
+    
+  <!-- ##code-section configure.zcml -->
+
+    <subscriber for=".interfaces.ICallForContractors
+            Products.LinguaPlone.events.IObjectTranslatedEvent"
+        handler=".handlers.handle_object_translation"
+      />
+
+    <subscriber for="zope.app.container.interfaces.IObjectAddedEvent"
+        handler=".handlers.handle_object_uploaded"
+        />
+
+    <subscriber for=".interfaces.ICallForContractors
+        Products.Archetypes.interfaces.IEditBegunEvent"
+        handler=".handlers.handle_edit_begun"
+        />
+
+    <subscriber for=".interfaces.ICallForContractors
+        Products.Archetypes.interfaces.IObjectEditedEvent"
+        handler=".handlers.handle_object_edited"
+        />
+
+    <subscriber for=".interfaces.ICallForContractors
+        Products.CMFCore.interfaces.IActionSucceededEvent"
+        handler=".handlers.handle_object_wf_modified"
+        />
+
+
+    <!--subscriber for="zope.component.interfaces.IObjectEvent"
+        handler=".handlers.print_events"
+        /-->
+
+    <configure zcml:condition="installed slc.xliff">
+
+        <adapter factory=".xliff.CallForContractorsAttributeExtractor" 
+                 for=".interfaces.ICallForContractors"
+                 provides="slc.xliff.interfaces.IAttributeExtractor" />
+    </configure>
+
+
+  <!-- ##/code-section configure.zcml -->
+</configure>

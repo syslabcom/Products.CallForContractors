@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<import-steps>
+     
+ <import-step
+    id="CallForContractors-Attachment-support"
+    handler="Products.CallForContractors.setuphandlers.installAttachmentSupport"
+    title="Additional setup to ensure Attachment handling works"
+    version="2007-11-01T14:50:38.642264">
+      Set up handling of attachments for CallForContractors
+ </import-step>
+
+</import-steps>
+ 

@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+    <div metal:fill-slot="main" i18n:domain="elevateIT"
+         tal:define="results python:[]">
+         
+<tal:resultlist tal:define="view context/@@calls_sorted_listing;
+                            resultSet view/results;
+                            plone context/@@plone;
+                            toLocalizedTime nocall:plone/toLocalizedTime">
+
+        <h1 i18n:translate="heading_calls_archive">Calls for contractors archive</h1>
+       
+        <a href="" i18n:translate="link_back_to_current_calls"
+           class="link-parent"
+           tal:attributes="href string:calls_listing"
+           >
+        Back to current calls for contractors
+        </a>
+         
+        <metal:block define-macro="listings"
+         tal:define="results resultSet/archive;">
+                     
+        <tal:block condition="results">
+            
+            <h2 i18n:translate="heading_calls_processed">Processed calls for contractors</h2>
+            <metal:block use-macro="here/calls_listing/macros/listing" />
+
+        </tal:block>
+            
+        <p tal:condition="not: results" i18n:translate="description_no_calls">
+         There are currently no calls for contractors.
+        </p>
+        </metal:block>
+
+    </tal:resultlist>
+    </div>
+
+</body>
+</html>

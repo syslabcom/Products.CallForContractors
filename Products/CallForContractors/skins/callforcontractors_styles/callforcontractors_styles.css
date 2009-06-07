@@ -1,0 +1,7 @@
+.ccontent-table { width: 100%; margin-top: 2em; }
+.ccontent-table td, th { border: 2px solid #eeeeee; padding: 5px; text-align: left; vertical-align: top; }
+.ccontent-table th { background-color: #ebebeb; font-weight: bold; }
+.ccontent-table td { background-color: transparent; }
+
+.ccontent-table th.ccontent-table-col1 { width: 40%; }
+.ccontent-table th.ccontent-table-col2 { width: 60%; }

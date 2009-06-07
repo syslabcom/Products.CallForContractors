@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<object name="portal_skins"
+        meta_type="Plone Skins Tool"
+        allow_any="False"
+        cookie_persistence="False"
+        request_varname="plone_skin">
+
+ <object name="callforcontractors_templates"
+         meta_type="Filesystem Directory View"
+         directory="CallForContractors/skins/callforcontractors_templates"/>
+ <object name="callforcontractors_styles"
+         meta_type="Filesystem Directory View"
+         directory="CallForContractors/skins/callforcontractors_styles"/>
+ <object name="callforcontractors_images"
+         meta_type="Filesystem Directory View"
+         directory="CallForContractors/skins/callforcontractors_images"/>
+ 
+ <skin-path name="Plone Default">
+  <layer insert-after="custom" 
+         name="callforcontractors_templates"/>
+  <layer insert-after="custom" 
+         name="callforcontractors_styles"/>
+  <layer insert-after="custom" 
+         name="callforcontractors_images"/>
+ </skin-path>
+
+</object>

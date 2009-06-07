@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="CallForContractors">
+<body>
+
+<metal:cssslot fill-slot="css_slot">
+  <style type="text/css" media="all" tal:condition="exists: portal/callforcontractors_styles.css"
+         tal:content="string:@import url($portal_url/callforcontractors_styles.css);">
+  </style>
+</metal:cssslot>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+           tal:define="templateId template/getId;
+                       view here/@@callforcontractors_helper;
+                       dummy view/checkForNewUploads;
+                       portal_path python: '/'.join(context.portal_url.getPortalObject().getPhysicalPath());
+                       getNameForLanguageCode nocall:here/portal_languages/getNameForLanguageCode;
+                       global purl here/portal_url;
+                       ">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading">
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
+        </h1>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+
+          <div tal:define="field python:here.getField('deadline')">
+            <label tal:content="field/widget/label">label</label>:
+            <metal:field use-macro="python:here.widget('deadline', mode='view')">
+            Sector
+            </metal:field>
+          </div>
+
+           <div tal:define="field python:here.getField('author')">
+            <label tal:content="field/widget/label">label</label>:
+            <metal:field use-macro="python:here.widget('author', mode='view')">
+            Sector
+            </metal:field>
+          </div>
+
+                    <table class="ccontent-table" cellspacing="0" cellpadding="0">
+                      <tr tal:define="field python:here.getField('text')">
+                          <th tal:content="field/widget/label">:</th>
+                      </tr>
+                      <tr>
+                          <td><metal:field use-macro="python:here.widget('text', mode='view')">
+                                Description
+                                </metal:field>
+                          </td>
+                      </tr>
+                    </table>
+
+          <tal:condition condition="here/getContract_notice"
+            tal:define="fieldname string:contract_notice;" >
+             <div metal:define-macro="reference_view">
+              <table class="ccontent-table" cellspacing="0" cellpadding="0"
+               tal:define="field python:here.getField(fieldname);
+                            ref python:field.getAccessor(here)()">
+                          <tr>
+                              <th class="ccontent-table-col1" 
+                                tal:content="field/widget/label">Tender specifications:</th>
+                              <td class="ccontent-table-col2" > 
+
+                                <span tal:define="language python:ref.Language()">
+                                    <a href="#"
+                                       tal:attributes="href ref/absolute_url;
+                                                       class python:ref.portal_type.replace(' ', '_')"
+                                       tal:content="python:ref.Title() or ref.absolute_url(relative=1)">
+                                      Sole target object's title
+                                    </a>
+                                    <span tal:condition="language">
+                                        [<span tal:replace="python:getNameForLanguageCode(language)"/>]
+                                    </span>
+                                </span>
+                        
+                              </td>
+                          </tr>
+                        </table>
+                    </div>
+          </tal:condition>
+
+
+          <tal:condition condition="here/getContract_notice_corrigendum" 
+            tal:define="fieldname string:contract_notice_corrigendum">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+
+          <tal:condition condition="here/getTechnical_specifications" 
+            tal:define="fieldname string:technical_specifications">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+           
+          <tal:condition condition="here/getAmendments" 
+            tal:define="fieldname string:amendments">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+
+          <tal:condition condition="here/getAgency_responses"
+             tal:define="fieldname string:agency_responses">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+
+          <tal:condition condition="here/getAward_notice"
+            tal:define="fieldname string:award_notice">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+
+          <tal:condition condition="here/getAward_notice_corrigendum"
+            tal:define="fieldname string:award_notice_corrigendum">
+                        <div metal:use-macro="here/callforcontractors_view/macros/reference_view"></div>
+           </tal:condition>
+
+                  <table class="ccontent-table" cellspacing="0" cellpadding="0">
+                      <tr tal:define="field python:here.getField('info')">
+                          <th class="ccontent-table-col1" tal:content="field/widget/label">Info</th>
+                          <td class="ccontent-table-col2">
+                    <metal:field use-macro="python:here.widget('info', mode='view')"></metal:field>
+                          </td>
+                      </tr>
+                    </table>
+                    
+                    <br /><br />
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+ 
