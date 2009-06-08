@@ -12,4 +12,22 @@ class CallForContractorsTestCase(ptc.PloneTestCase):
     pass
     
 class CallForContractorsFunctionalTestCase(ptc.FunctionalTestCase):
-    pass
+    """We use this class for functional integration tests that use
+    doctest syntax. Again, we can put basic common utility or setup
+    code in here.
+    """
+    
+    class Session(dict):
+        def set(self, key, value):
+            self[key] = value
+
+    def _setup(self):
+        ptc.FunctionalTestCase._setup(self)
+        self.app.REQUEST['SESSION'] = self.Session()
+
+
+    def afterSetUp(self):
+        roles = ('Member', 'Contributor')
+        self.portal.portal_membership.addMember('contributor',
+                                                'secret',
+                                                roles, [])
