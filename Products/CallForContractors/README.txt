@@ -1,16 +1,11 @@
 Introduction
 ============
 
-This is a full-blown functional test. The emphasis here is on testing what
-the user may input and see, and the system is largely tested as a black box.
-We use PloneTestCase to set up this test as well, so we have a full Plone site
-to play with. We *can* inspect the state of the portal, e.g. using 
-self.portal and self.folder, but it is often frowned upon since you are not
-treating the system as a black box. Also, if you, for example, log in or set
-roles using calls like self.setRoles(), these are not reflected in the test
-browser, which runs as a separate session.
+This content type can be used to present various documents associated with a Call for Contractors. It is
+language-aware and has a language fallback.
 
-Being a doctest, we can tell a story here.
+Boilerplate
+===========
 
 First, we must perform some setup. We use the testbrowser that is shipped
 with Five, as this provides proper Zope 2 integration. Most of the 
@@ -52,5 +47,18 @@ And we ensure that we get the friendly logged-in message:
     True
 
 
--*- extra stuff goes here -*-
+
+Adding a CallForContractors
+===================
+
+We add a Case Study and make sure the id is set correctly.
+    >>> _ = self.folder.invokeFactory(type_name='CallForContractors', id='mycfc')
+    >>> mycfc = self.folder.mycfc
+    >>> mycfc.getId()
+	'mycfc'
+
+For good measure, we also set a title and test for it.	
+	>>> mycfc.setTitle('My Call for Contractors')
+	>>> mycfc.Title()
+	'My Call for Contractors'
 
