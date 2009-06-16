@@ -2,21 +2,32 @@ from Testing import ZopeTestCase as ztc
 from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
 
-ztc.installProduct('CallForContractors')
-ztc.installProduct('CMFLinkChecker')
-ztc.installProduct('ZCatalog')
+from Products.Five import fiveconfigure, zcml
+from Products.PloneTestCase import layer
 
-ptc.setupPloneSite(products=['CallForContractors', 'CMFLinkChecker'])
+SiteLayer = layer.PloneSite
+
+class CallForContractorsLayer(SiteLayer):
+    @classmethod
+    def setUp(cls):
+        ztc.installProduct('CallForContractors')
+        ztc.installProduct('CMFLinkChecker')
+        ztc.installProduct('ZCatalog')
+
+        ptc.setupPloneSite(products=['CallForContractors', 'CMFLinkChecker'])
+        SiteLayer.setUp()
+
 
 class CallForContractorsTestCase(ptc.PloneTestCase):
-    pass
-    
+    layer = CallForContractorsLayer
+
 class CallForContractorsFunctionalTestCase(ptc.FunctionalTestCase):
     """We use this class for functional integration tests that use
     doctest syntax. Again, we can put basic common utility or setup
     code in here.
     """
-    
+    layer = CallForContractorsLayer
+
     class Session(dict):
         def set(self, key, value):
             self[key] = value
