@@ -11,10 +11,8 @@ class CallForContractorsLayer(SiteLayer):
     @classmethod
     def setUp(cls):
         ztc.installProduct('CallForContractors')
-        ztc.installProduct('CMFLinkChecker')
-        ztc.installProduct('ZCatalog')
 
-        ptc.setupPloneSite(products=['CallForContractors', 'CMFLinkChecker'])
+        ptc.setupPloneSite(products=['CallForContractors'])
         SiteLayer.setUp()
 
 
