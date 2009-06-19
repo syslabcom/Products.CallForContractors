@@ -49,7 +49,7 @@ And we ensure that we get the friendly logged-in message:
 
 
 Adding a CallForContractors
-===================
+===========================
 
 We add a Case Study and make sure the id is set correctly.
     >>> _ = self.folder.invokeFactory(type_name='CallForContractors', id='mycfc')
