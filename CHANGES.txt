@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Products.CallForContractors 1.3 (unreleased)
+--------------------------------------------
+
+- Added EUPL license (deroiste)
+
 Products.CallForContractors 1.2 (2009-06-15)
 --------------------------------------------
 
