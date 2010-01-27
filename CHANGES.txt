@@ -1,12 +1,13 @@
-Changelog
-=========
+Products.CallForContractors Changelog
+=====================================
 
-Products.CallForContractors 1.3 (unreleased)
+1.3 (unreleased)
 --------------------------------------------
 
 - Added EUPL license (deroiste)
+- Made compatible with latest version of LinguaTools > 1.3 (thomasw)
 
-Products.CallForContractors 1.2 (2009-06-15)
+1.2 (2009-06-15)
 --------------------------------------------
 
 - added tests and cleanup (thomas)
@@ -15,5 +16,5 @@ Products.CallForContractors 1.2 (2009-06-15)
 1.1 (2009-06-04)
 ----------------
 
-- Created recipe with ZopeSkel
-  [pilz]
+- Created recipe with ZopeSkel (pilz)
+
