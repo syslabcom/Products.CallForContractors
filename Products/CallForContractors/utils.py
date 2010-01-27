@@ -40,7 +40,7 @@ def _doRenamingOfFiles(obj):
             for item in obj.objectItems():
                 lang, namestem, suffix = _guessLanguage(item[1], item[0])
                 current_file = item[1]
-                if current_file.Language()!= lang:
+                if current_file.Language()!= lang and lang != '':
                     current_file.setLanguage(lang)
                     filestems.add(namestem)
                     ## Not using the following code, we have linguatools for that!
@@ -62,7 +62,7 @@ def _doRenamingOfFiles(obj):
         for item in can.objectItems():
             lang, namestem, suffix = _guessLanguage(item[1], item[0])
             current_file = item[1]
-            if current_file.Language()!= lang:
+            if current_file.Language()!= lang and lang != '':
                 current_file.setLanguage(lang)
                 filestems.add(namestem)
                 # we need to unset the marker on the translated Calls as well, so remeber the language
@@ -95,5 +95,5 @@ def _doRenamingOfFiles(obj):
         for filestem in filestems:
             can_filename = filestem + default_lang + '.' + suffix
             can_file = getattr(can, can_filename, None)
-            lt = can_file.restrictedTraverse('@@linguatools')
+            lt = can_file.restrictedTraverse('@@linguatools-old')
             lt.fixTranslationReference()
