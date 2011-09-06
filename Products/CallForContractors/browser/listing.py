@@ -2,16 +2,16 @@ from Products.CallForContractors.browser.interfaces import ICallsListing
 from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
-from Products.CMFPlone import utils
+from Products.Five import BrowserView
 from DateTime import DateTime
 from DocumentTemplate import sequence
 
 
-class CallsSortedListing(utils.BrowserView):
+class CallsSortedListing(BrowserView):
     implements(ICallsListing)
 
     def results(self):
-        context = utils.context(self)
+        context = self.context
         portal_catalog = getToolByName(context, 'portal_catalog')
         res = portal_catalog({'portal_type':'CallForContractors'
                                    , 'sort_on':'effective'
