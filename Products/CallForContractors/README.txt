@@ -53,7 +53,6 @@ We use the 'Add new' menu to add a new content item.
 Now we fill the form and submit it.
 
     >>> browser.getControl(name='title').value = 'My Call for Contractors'
-    >>> #import pdb;pdb.set_trace()
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
