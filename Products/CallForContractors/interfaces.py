@@ -11,4 +11,3 @@ class ICallForContractors(Interface):
 
 ##code-section FOOT
 ##/code-section FOOT
-

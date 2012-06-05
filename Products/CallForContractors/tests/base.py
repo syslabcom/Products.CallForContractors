@@ -1,42 +1,48 @@
-from Testing import ZopeTestCase as ztc
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import onsetup
-
-from Products.Five import fiveconfigure, zcml
-from Products.PloneTestCase import layer
-
-SiteLayer = layer.PloneSite
-
-class CallForContractorsLayer(SiteLayer):
-    @classmethod
-    def setUp(cls):
-        ztc.installProduct('CallForContractors')
-
-        ptc.setupPloneSite(products=['CallForContractors'])
-        SiteLayer.setUp()
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import IntegrationTesting
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import applyProfile
+from plone.testing import z2
 
 
-class CallForContractorsTestCase(ptc.PloneTestCase):
-    layer = CallForContractorsLayer
-
-class CallForContractorsFunctionalTestCase(ptc.FunctionalTestCase):
-    """We use this class for functional integration tests that use
-    doctest syntax. Again, we can put basic common utility or setup
-    code in here.
-    """
-    layer = CallForContractorsLayer
-
-    class Session(dict):
-        def set(self, key, value):
-            self[key] = value
-
-    def _setup(self):
-        ptc.FunctionalTestCase._setup(self)
-        self.app.REQUEST['SESSION'] = self.Session()
+class DummySession(dict):
+    def set(self, key, value):
+        self[key] = value
 
 
-    def afterSetUp(self):
+class CallForContractors(PloneSandboxLayer):
+
+    defaultBases = (PLONE_FIXTURE,)
+
+    def setUpZope(self, app, configurationContext):
+        z2.installProduct(app, 'Products.CallForContractors')
+
+        import Products.CallForContractors
+        self.loadZCML('configure.zcml', package=Products.CallForContractors)
+
+    def setUpPloneSite(self, portal):
+        # Needed to make skins work
+        applyProfile(portal, 'Products.CMFPlone:plone')
+
+        applyProfile(portal, 'Products.CallForContractors:default')
+
+        # Add a contributor
         roles = ('Member', 'Contributor')
-        self.portal.portal_membership.addMember('contributor',
-                                                'secret',
-                                                roles, [])
+        portal.portal_membership.addMember(
+            'contributor', 'secret', roles, [])
+
+        # Use a dummy session
+        # portal.REQUEST['SESSION'] = DummySession()
+
+    def tearDownZope(self, app):
+        z2.uninstallProduct(app, 'Products.CallForContractors')
+
+
+CALLFORCONTRACTORS_FIXTURE = CallForContractors()
+INTEGRATION_TESTING = IntegrationTesting(
+    bases=(CALLFORCONTRACTORS_FIXTURE,),
+    name="CallForContractors:Integration")
+FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(CALLFORCONTRACTORS_FIXTURE,),
+    name="CallForContractors:Functional")

@@ -40,23 +40,19 @@ else:
 from zope.interface import implements
 from interfaces import ICallForContractors
 
-from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
-
 from Products.CallForContractors.config import *
 
 # additional imports from tagged value 'import'
 #from Products.RichDocument.content.richdocument import RichDocument, RichDocumentSchema as BaseSchema
-from Products.ATContentTypes.content.document import ATDocument, ATDocumentSchema as BaseSchema
+from Products.ATContentTypes.content.document import ATDocument
+from Products.ATContentTypes.content.document import ATDocumentSchema as BaseSchema
 from Products.ATContentTypes.lib.constraintypes import ConstrainTypesMixinSchema
 from Products.ATContentTypes.content.folder import ATFolder
 from Products.ATContentTypes.content.schemata import NextPreviousAwareSchema
-from Acquisition import aq_base, aq_parent, aq_base
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 
 ##code-section module-header #fill in your manual code here
-from Products.SimpleAttachment.widget import AttachmentsManagerWidget
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import ReferenceBrowserWidget
-from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.ATContentTypes.configuration import zconf
 from Products.CallForContractors import CallMessageFactory as _
 ##/code-section module-header
@@ -70,7 +66,8 @@ schema = Schema((
         widget=CalendarWidget(
             size="CalendarWidget",
             label=_(u'call_deadline_label', default=u"Deadline"),
-            description=_(u'call_deadline_description', default=u"The deadline for this call"),
+            description=_(u'call_deadline_description',
+                          default=u"The deadline for this call"),
         ),
         languageIndependent=True
     ),
@@ -80,7 +77,8 @@ schema = Schema((
         widget=StringWidget(
             size=80,
             label=_(u'call_author_label', default=u"Author"),
-            description=_(u'call_author_description', default=u"The author issuing the call"),
+            description=_(u'call_author_description',
+                          default=u"The author issuing the call"),
         )
     ),
 
@@ -88,27 +86,29 @@ schema = Schema((
               required=False,
               searchable=True,
               primary=True,
-              storage = AnnotationStorage(migrate=True),
-              validators = ('isTidyHtmlWithCleanup',),
-              default_output_type = 'text/x-html-safe',
-              widget = RichWidget(
-                        description = _(u'call_text_description', default=u'Enter the details'),
-                        label = _(u'call_text_label', default=u'Details'),
-                        rows = 15,
-                        allow_file_upload = zconf.ATDocument.allow_document_upload),
+              storage=AnnotationStorage(migrate=True),
+              validators=('isTidyHtmlWithCleanup',),
+              default_output_type='text/x-html-safe',
+              widget=RichWidget(
+                  description=_(u'call_text_description',
+                                  default=u'Enter the details'),
+                  label=_(u'call_text_label', default=u'Details'),
+                  rows=15,
+                  allow_file_upload=zconf.ATDocument.allow_document_upload),
     ),
 
     TextField('info',
               required=False,
               searchable=True,
-              storage = AnnotationStorage(migrate=True),
-              validators = ('isTidyHtmlWithCleanup',),
-              default_output_type = 'text/x-html-safe',
-              widget = RichWidget(
-                        description = _(u'call_info_description', default=u'Enter further information'),
-                        label = _(u'call_info_label', default=u'Information'),
-                        rows = 15,
-                        allow_file_upload = zconf.ATDocument.allow_document_upload),
+              storage=AnnotationStorage(migrate=True),
+              validators=('isTidyHtmlWithCleanup',),
+              default_output_type='text/x-html-safe',
+              widget=RichWidget(
+                  description=_(u'call_info_description',
+                                  default=u'Enter further information'),
+                  label=_(u'call_info_label', default=u'Information'),
+                  rows=15,
+                  allow_file_upload=zconf.ATDocument.allow_document_upload),
     ),
 
     ReferenceField(
@@ -117,7 +117,8 @@ schema = Schema((
         multiValued=False,
         widget=ReferenceBrowserWidget(
             label=_(u'call_contract_notice_label', default=u'Contract notice'),
-            description=_(u'call_contract_notice_description', default=u'Select the file with the contract notice'),
+            description=_(u'call_contract_notice_description',
+                          default=u'Select the file with the contract notice'),
             allow_search=1,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -131,8 +132,11 @@ schema = Schema((
         languageIndependent=0,
         multiValued=False,
         widget=ReferenceBrowserWidget(
-            label=_(u'call_contract_notice_corrigendum_label', default=u'Contract notice corrigendum'),
-            description=_(u'call_contract_notice_corrigendum_description', default=u'Select the file with the contract notice corrigendum'),
+            label=_(u'call_contract_notice_corrigendum_label',
+                    default=u'Contract notice corrigendum'),
+            description=_(u'call_contract_notice_corrigendum_description',
+                          default=u'Select the file with the contract notice '
+                          u'corrigendum'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -145,8 +149,11 @@ schema = Schema((
         languageIndependent=0,
         multiValued=False,
         widget=ReferenceBrowserWidget(
-            label=_(u'call_technical_specifications_label', default=u'Technical specifications'),
-            description=_(u'call_technical_specifications_description', default=u'Select the file with the technical specifications'),
+            label=_(u'call_technical_specifications_label',
+                    default=u'Technical specifications'),
+            description=_(
+                u'call_technical_specifications_description',
+                default=u'Select the file with the technical specifications'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -160,7 +167,9 @@ schema = Schema((
         multiValued=False,
         widget=ReferenceBrowserWidget(
             label=_(u'call_amendments_label', default=u'Amendments'),
-            description=_(u'call_amendments_description', default=u'Select the file with the amendments'),
+            description=_(
+                u'call_amendments_description',
+                default=u'Select the file with the amendments'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -187,8 +196,12 @@ schema = Schema((
         languageIndependent=0,
         multiValued=False,
         widget=ReferenceBrowserWidget(
-            label=_(u'call_agency_responses_lable', default=u'Agency responses to requests for clarification'),
-            description=_(u'call_agency_responses_description', default=u'Select the file with the agency responses'),
+            label=_(
+                u'call_agency_responses_lable',
+                default=u'Agency responses to requests for clarification'),
+            description=_(
+                u'call_agency_responses_description',
+                default=u'Select the file with the agency responses'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -202,7 +215,9 @@ schema = Schema((
         multiValued=False,
         widget=ReferenceBrowserWidget(
             label=_(u'call_award_notice_label', default=u'Award notice'),
-            description=_(u'call_award_notice_description', default=u'Select the file with the award notice'),
+            description=_(
+                u'call_award_notice_description',
+                default=u'Select the file with the award notice'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -215,8 +230,11 @@ schema = Schema((
         languageIndependent=0,
         multiValued=False,
         widget=ReferenceBrowserWidget(
-            label=_(u'call_award_notice_corrigendum_label', default=u'Award notice corrigendum'),
-            description=_(u'call_award_notice_corrigendum_description', default=u'Select the file with the award notice corrigendum'),
+            label=_(u'call_award_notice_corrigendum_label',
+                    default=u'Award notice corrigendum'),
+            description=_(
+                u'call_award_notice_corrigendum_description',
+                default=u'Select the file with the award notice corrigendum'),
             allow_search=0,
             restrict_browsing_to_startup_directory=1,
             force_close_on_insert=1,
@@ -230,7 +248,7 @@ schema = Schema((
 CallForContractors_schema = BaseSchema.copy() + \
     schema.copy() +\
     ConstrainTypesMixinSchema.copy() +\
-    NextPreviousAwareSchema.copy ()
+    NextPreviousAwareSchema.copy()
 
 finalizeATCTSchema(CallForContractors_schema)
 
@@ -243,23 +261,20 @@ for name in unwantedFields:
     CallForContractors_schema[name].widget.visible['view'] = 'invisible'
     CallForContractors_schema.changeSchemataForField(name, 'default')
 
+
 class CallForContractors(ATFolder, ATDocument):
     """
     """
     security = ClassSecurityInfo()
     implements(ICallForContractors)
-    
+
     meta_type = 'CallForContractors'
-    
+
     _at_rename_after_creation = True
 
     schema = CallForContractors_schema
-    
+
     # enable FTP/WebDAV and friends
     PUT = ATDocument.PUT
 
-
 registerType(CallForContractors, PROJECTNAME)
-
-
-

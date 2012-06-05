@@ -40,4 +40,3 @@ from Products.SimpleAttachment.setuphandlers import registerAttachmentsFormContr
 def installAttachmentSupport(context):
     """ install attachment handlers """
     pass
-
