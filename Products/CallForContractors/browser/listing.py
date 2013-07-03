@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from Products.CallForContractors.browser.interfaces import ICallsListing
 from Products.CMFCore.utils import getToolByName
 
@@ -50,3 +51,11 @@ class CallsSortedListing(BrowserView):
         ores = sequence.sort(ores, (('effective', 'cmp', 'desc'),
                                     ('CreationDate', 'cmp', 'desc')))
         return dict(current=cres, ongoing=ores, archive=ares)
+
+    def get_intro(self):
+        intro = getattr(aq_base(self.context), 'calls_intro', None)
+        if intro and intro.portal_type in ('Document', 'RichDocument'):
+            text = intro.getText()
+        else:
+            text = ''
+        return text

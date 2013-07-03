@@ -10,12 +10,15 @@
 
 <tal:resultlist tal:define="view context/@@calls_sorted_listing;
                             resultSet view/results;
+                            intro view/get_intro;
                             plone context/@@plone;
+
                             toLocalizedTime nocall:plone/toLocalizedTime">
 
         <h1 tal:content="here/Title">Call for contractors</h1>
 
         <div tal:content="here/Description">description</div>
+        <span tal:condition="intro" tal:replace="structure intro">Intro text</span>
 
         <metal:block define-macro="listings"
          tal:define="cresults resultSet/current;
