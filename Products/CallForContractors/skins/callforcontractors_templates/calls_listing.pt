@@ -14,9 +14,9 @@
                             toLocalizedTime nocall:plone/toLocalizedTime">
 
         <h1 tal:content="here/Title">Call for contractors</h1>
-        
+
         <div tal:content="here/Description">description</div>
-        
+
         <metal:block define-macro="listings"
          tal:define="cresults resultSet/current;
                      oresults resultSet/ongoing;
@@ -24,21 +24,21 @@
                      have_results python:(len(cresults)+len(oresults))>0;
                      now python:DateTime();
                 ">
-                        
+
         <tal:block condition="have_results">
-            
+
             <tal:block define="results python:cresults" condition="nocall:cresults">
                 <h2 i18n:translate="heading_calls_current">Current calls for contractors</h2>
-                
+
                 <metal:block use-macro="here/calls_listing/macros/listing" />
-                             
+
             </tal:block>
-            
+
             <tal:block define="results python:oresults" condition="nocall:oresults">
                 <h2 i18n:translate="heading_calls_ongoing">Ongoing calls for contractors</h2>
-                
+
                 <metal:block use-macro="here/calls_listing/macros/listing" />
-                             
+
             </tal:block>
         </tal:block>
 
@@ -47,20 +47,20 @@
            tal:condition="nocall:aresults"
            tal:attributes="href string:${here/absolute_url}/calls_listing_archive">Archive</a>
         </p>
-        
+
         </metal:block>
 
-        
-        <metal:block define-macro="listing" 
+
+        <metal:block define-macro="listing"
                      tal:define="results results">
         <dl tal:condition="results">
         <metal:block tal:repeat="res results">
         <tal:block define="robj res/getObject">
 
             <dt tal:define="url python:robj.absolute_url()">
-            <div style="background: transparent url('/icon_press.gif') 0 0 no-repeat; padding-left: 20px" tal:on-error="nothing"> 
-            <a href="#" tal:attributes="href url" 
-                        tal:content="structure python:toLocalizedTime(res.effective)" />: <span tal:replace="robj/Title|robj/title_or_id" /></div> 
+            <div style="background: transparent url('/icon_press.gif') 0 0 no-repeat; padding-left: 20px" tal:on-error="nothing">
+            <a href="#" tal:attributes="href url"
+                        tal:content="structure python:toLocalizedTime(res.effective)" />: <span tal:replace="robj/Title|robj/title_or_id" /></div>
             </dt>
 
             <dd>
