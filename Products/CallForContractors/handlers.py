@@ -25,7 +25,7 @@ def handle_object_translation(obj, event):
         # if we get a list, it's not one of our 'section' file reference fields
         if refobj is None or type(refobj) == type(list()):
             continue
-        refobjtrans = refobj.getTranslation(event.language, refobj)
+        refobjtrans = refobj.getTranslation(event.language) or refobj
         uid = refobjtrans.UID()
         event.target.getField(field.getName()).getMutator(event.target)(uid)
 
@@ -111,7 +111,7 @@ def handle_object_edited(obj, event):
                 continue
             for tlang in translations.keys():
                 tfield = translations[tlang][0].getField(field.getName())
-                refobjtrans = refobj.getTranslation(tlang, refobj)
+                refobjtrans = refobj.getTranslation(tlang) or refobj
                 uid = refobjtrans.UID()
                 tfield.getMutator(translations[tlang][0])(uid)
 
