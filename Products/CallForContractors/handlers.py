@@ -4,7 +4,8 @@ from Products.CMFCore.utils import getToolByName
 from Acquisition import aq_parent
 from Products.CallForContractors.interfaces import ICallForContractors
 from Products.ATContentTypes.interface.file import IATFile
-from Products.CallForContractors.CallForContractors import NEWLY_UPLOADED_MARKER
+from Products.CallForContractors.CallForContractors import \
+    NEWLY_UPLOADED_MARKER
 from Products.CallForContractors.utils import _doRenamingOfFiles
 
 
@@ -24,22 +25,8 @@ def handle_object_translation(obj, event):
         # if we get a list, it's not one of our 'section' file reference fields
         if refobj is None or type(refobj) == type(list()):
             continue
-        fname = refobj.getFilename()
-        lang, namestem, suffix = _guessLanguage(obj, fname)
-        transname = namestem + event.language + '.' + suffix
-        # the language version might already have been moved to the target
-        # so look on the target first and then on the canonical
-        refobjtrans = getattr(event.target, transname,
-                              getattr(obj, transname, None))
-        # the language suffix might be uppercase on the file..
-        if not refobjtrans:
-            transname = namestem + event.language.upper() + '.' + suffix
-            refobjtrans = getattr(event.target, transname,
-                                  getattr(obj, transname, None))
-        if refobjtrans:
-            uid = refobjtrans.UID()
-        else:
-            uid = refobj.UID()
+        refobjtrans = refobj.getTranslation(event.language, refobj)
+        uid = refobjtrans.UID()
         event.target.getField(field.getName()).getMutator(event.target)(uid)
 
 
@@ -122,27 +109,11 @@ def handle_object_edited(obj, event):
             # fields
             if refobj is None or type(refobj) == type(list()):
                 continue
-            fname = refobj.getFilename()
-            lang, namestem, suffix = _guessLanguage(refobj, fname)
             for tlang in translations.keys():
                 tfield = translations[tlang][0].getField(field.getName())
-                if not tfield.getRaw(translations[tlang][0]):
-                    transname = namestem + tlang + '.' + suffix
-                    # the correct language version might already have been
-                    # moved to the target so look on the target first and then
-                    # on the canonical
-                    refobjtrans = getattr(translations[tlang][0], transname,
-                                          getattr(obj, transname, None))
-                    if not refobjtrans:
-                        # the language suffix might be uppercase on the file...
-                        transname = namestem + tlang.upper() + '.' + suffix
-                        refobjtrans = getattr(translations[tlang][0],
-                            transname, getattr(obj, transname, None))
-                    if refobjtrans:
-                        uid = refobjtrans.UID()
-                    else:
-                        uid = refobj.UID()
-                    tfield.getMutator(translations[tlang][0])(uid)
+                refobjtrans = refobj.getTranslation(tlang, refobj)
+                uid = refobjtrans.UID()
+                tfield.getMutator(translations[tlang][0])(uid)
 
 
 def print_events(event):
